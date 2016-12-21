@@ -1,0 +1,75 @@
+function multiplyConstant() {
+
+//  thisSel is the range of cells that you have selected.
+
+  var thisSel = SpreadsheetApp.getActiveRange();
+
+//  thisData is an array of values in the active selection.
+
+  var thisData = thisSel.getValues();
+
+ 
+
+  var constantInput = Browser.inputBox("Nhân hằng số", "Hãy nhập hằng số cần nhân:", Browser.Buttons.OK_CANCEL)
+
+ 
+
+  if (!isNaN(constantInput) && constantInput !== 0 && constantInput.replace(/\s+/g, '') !== '') {
+
+   
+
+//  newData will hold the transformed values.
+
+    var newData = [];
+
+//  We loop through the subarrays of thisData (=rows).
+
+    for (i in thisData) {
+
+//    Each row is given a temporary variable.
+
+      var thisRow = thisData[i];
+
+//    newRow will hold the transformed values.
+
+      var newRow = [];
+
+//    We loop through the elements in each subarray (=cells).
+
+      for (j in thisRow) {
+
+//      We check if the cell values are numbers.
+
+        if (!isNaN(thisRow[j])) {
+
+//        If they are, we add them to a row in newData.
+
+          newRow.push(thisRow[j] * constantInput);
+
+        } else newRow.push(thisRow[j])
+
+          }
+
+      newData.push(newRow);
+
+    }
+
+//  We then add the transformed values back to the spreadsheet in the same place.
+
+    thisSel.setValues(newData);
+
+  }
+
+}
+
+function onOpen() {
+
+  var ssUi = SpreadsheetApp.getUi();
+
+  ssUi.createMenu('Nhân với hằng')
+
+  .addItem('Run "Nhân với hằng số"', 'multiplyConstant')
+
+  .addToUi();
+
+}
